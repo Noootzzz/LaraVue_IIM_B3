@@ -1,32 +1,32 @@
 <template>
     <MusicLayout>
-        <template #title>
-            Tracks
-        </template>
+        <template #title> Tracks </template>
 
         <template #actions>
-            
+            <Link
+                href="/tracks/form"
+                class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            >
+                Add Track
+            </Link>
         </template>
 
         <template #content>
-            <div class="p-4">
-                <h1 class="mb-4 text-2xl font-bold">Tracks</h1>
-                <ul>
-                    <li
-                        v-for="track in tracks"
-                        :key="track.id"
-                        class="mb-2 rounded border p-4"
-                    >
-                        {{ track.title }} - {{ track.artist }}
-                    </li>
-                </ul>
+            <div class="grid grid-cols-4 gap-4">
+                <Track
+                    v-for="track in tracks"
+                    :key="track.slug"
+                    :track="track"
+                />
             </div>
         </template>
     </MusicLayout>
 </template>
 
 <script>
+import Track from '@/components/Tracks/Track.vue';
 import MusicLayout from '@/layouts/MusicLayout.vue';
+import { Link } from '@inertiajs/vue3';
 
 export default {
     name: 'Index',
@@ -35,6 +35,8 @@ export default {
     },
     components: {
         MusicLayout,
+        Track,
+        Link,
     },
 };
 </script>

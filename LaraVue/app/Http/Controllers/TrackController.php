@@ -16,4 +16,9 @@ class TrackController extends Controller
             'tracks' => $tracks,
         ]);
     }
+
+    public function form()
+    {
+        return Inertia::render('Tracks/Form');
+    }
 }

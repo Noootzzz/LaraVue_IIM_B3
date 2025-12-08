@@ -29,7 +29,6 @@
                     <slot name="actions" />
                 </div>
             </div>
-
             <slot name="content" />
         </div>
     </div>
