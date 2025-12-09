@@ -20,5 +20,10 @@ class Track extends Model
         'is_visible',
         'play_count',
     ];
+    
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
     

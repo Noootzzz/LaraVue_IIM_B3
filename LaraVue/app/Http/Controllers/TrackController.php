@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Track;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -25,7 +26,7 @@ class TrackController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'title' => ['required', 'string', 'max:255' ],
             'artist' => ['required', 'string', 'max:255' ],
             'image' => ['required', 'image' ],
@@ -58,7 +59,7 @@ class TrackController extends Controller
 
     public function update(Request $request, Track $track)
     {
-        $validated = $request->validate([
+        $request->validate([
             'title' => ['required', 'string', 'max:255' ],
             'artist' => ['required', 'string', 'max:255' ],
         ]);
@@ -72,8 +73,11 @@ class TrackController extends Controller
 
     public function destroy(Track $track)
     {
+
+        Storage::delete([$track->image, $track->audio]);
+
         $track->delete();
 
-        return redirect()->route('tracks.index')->with('success', 'Track deleted successfully.');
+        return redirect()->back()->with('success', 'Track deleted successfully.');
     }
 }

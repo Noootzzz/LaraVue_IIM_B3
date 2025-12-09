@@ -23,6 +23,8 @@
         <Link
             :href="route('tracks.destroy', track)"
             method="delete"
+            as="button"
+            preserve-scroll
             class="rounded-full px-6 font-bold text-red-500"
             >Supprimer</Link
         >
