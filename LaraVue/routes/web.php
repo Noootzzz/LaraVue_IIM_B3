@@ -17,7 +17,11 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('test', [HomeController::class, 'test'])->name('test');
-Route::get('tracks', [TrackController::class, 'index'])->name('tracks.index');
-Route::get('tracks/form', [TrackController::class, 'form'])->name('tracks.form');
+
+Route::prefix('tracks')->name('tracks.')->group(function () {
+    Route::get('/', [TrackController::class, 'index'])->name('index');
+    Route::get('/create', [TrackController::class, 'create'])->name('create');
+    Route::post('/', [TrackController::class, 'store'])->name('store');
+});
 
 require __DIR__.'/settings.php';

@@ -21,8 +21,8 @@ class TrackFactory extends Factory
             'slug' => 'trk-' . Str::uuid(),
             'title' => fake()->sentence(3),
             'artist' => fake()->name(),
-            'image' => 'public/test.jpg',
-            'audio' => 'public/test.mp3',
+            'image' => 'tracks/images/test.jpg',
+            'audio' => 'tracks/audio/test.mp3',
             'is_visible' => fake()->boolean(90),
             'play_count' => fake()->numberBetween(0, 500),
         ];
