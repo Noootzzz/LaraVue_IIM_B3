@@ -40,6 +40,7 @@
             >
                 <Link
                     :href="route('tracks.edit', track)"
+                    v-if="$page.props.isAdmin"
                     class="rounded-full bg-black/40 p-2.5 text-white backdrop-blur-md transition-colors hover:bg-purple-600 hover:text-white"
                     title="Modifier"
                 >
@@ -47,6 +48,7 @@
                 </Link>
                 <Link
                     :href="route('tracks.destroy', track)"
+                    v-if="$page.props.isAdmin"
                     method="delete"
                     as="button"
                     preserve-scroll

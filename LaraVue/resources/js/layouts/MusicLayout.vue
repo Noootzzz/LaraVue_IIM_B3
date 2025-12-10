@@ -69,32 +69,35 @@
                     <Mic2
                         class="mr-3 h-5 w-5 transition-colors group-hover:text-blue-500"
                     />
-                    Artistes
-                </a>
-                <a
-                    href="#"
-                    class="group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-muted-foreground transition-all hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground"
-                >
-                    <Disc
-                        class="mr-3 h-5 w-5 transition-colors group-hover:text-green-500"
-                    />
-                    Albums
+                    Playlists
                 </a>
             </nav>
 
             <!-- User Profile -->
-            <div class="border-t border-white/5 p-4">
-                <a
-                    href="#"
-                    class="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
+            <div class="border-t border-white/5 p-4 text-center">
+                <Link
+                    v-if="$page.props.auth.user"
+                    :href="route('logout')"
+                    method="post"
+                    as="button"
+                    preserve-scroll
+                    class="rounded-full p-2.5"
+                    >Log out</Link
                 >
-                    <div
-                        class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-gray-700 to-gray-600"
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                     >
-                        <User class="h-4 w-4" />
-                    </div>
-                    <span>Mon Compte</span>
-                </a>
+                        Log in
+                    </Link>
+                    <Link
+                        :href="route('register')"
+                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                    >
+                        Register
+                    </Link>
+                </template>
             </div>
         </aside>
 
@@ -188,6 +191,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import {
     CheckCircle,
     Disc,
@@ -210,6 +214,7 @@ export default {
         Disc,
         User,
         Menu,
+        Link,
     },
     data() {
         return {

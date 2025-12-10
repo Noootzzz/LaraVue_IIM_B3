@@ -5,6 +5,7 @@
         <template #actions>
             <Link
                 :href="route('tracks.create')"
+                v-if="$page.props.isAdmin"
                 class="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-3 font-bold text-white shadow-lg shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
             >
                 <Plus
@@ -188,11 +189,6 @@
                                 ></div>
                             </div>
                         </div>
-                        <button
-                            class="text-muted-foreground transition hover:text-foreground"
-                        >
-                            <ListMusic class="h-4 w-4" />
-                        </button>
                     </div>
                 </div>
             </div>
