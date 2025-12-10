@@ -13,9 +13,12 @@ class TrackController extends Controller
     public function index()
     {
         $tracks = Track::where('is_visible', true)->get();
-        
+        $user = request()->user();
+        $playlists = $user ? $user->playlists : [];
+
         return Inertia::render('Tracks/Index', [
             'tracks' => $tracks,
+            'playlists' => $playlists,
         ]);
     }
 

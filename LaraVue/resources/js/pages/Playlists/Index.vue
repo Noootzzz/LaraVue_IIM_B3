@@ -1,17 +1,16 @@
 <template>
     <MusicLayout>
-        <template #title>Découvrir</template>
+        <template #title>Playlists</template>
 
         <template #actions>
             <Link
-                :href="route('tracks.create')"
-                v-if="$page.props.isAdmin"
+                :href="route('playlists.create')"
                 class="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-3 font-bold text-white shadow-lg shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
             >
                 <Plus
                     class="h-5 w-5 transition-transform duration-300 group-hover:rotate-90"
                 />
-                <span>Ajouter une musique</span>
+                <span>Ajouter une playlist</span>
             </Link>
         </template>
 
@@ -55,17 +54,16 @@
                 leave-to-class="opacity-0 scale-95"
                 move-class="transition duration-500 ease-in-out"
             >
-                <Track
-                    v-for="track in filteredTracks"
-                    :key="track.slug"
-                    :track="track"
-                    @listen="handleListen"
+                <Playlist
+                    v-for="playlist in filteredPlaylists"
+                    :key="playlist.id"
+                    :playlist="playlist"
                 />
             </transition-group>
 
             <!-- Empty State -->
             <div
-                v-if="filteredTracks.length === 0"
+                v-if="filteredPlaylists.length === 0"
                 class="flex flex-col items-center justify-center py-32 text-muted-foreground"
             >
                 <div
@@ -85,7 +83,7 @@
 </template>
 
 <script>
-import Track from '@/components/Tracks/Track.vue';
+import Playlist from '@/components/Playlists/Playlist.vue';
 import { usePlayer } from '@/composables/usePlayer';
 import MusicLayout from '@/layouts/MusicLayout.vue';
 import { Link } from '@inertiajs/vue3';
@@ -94,15 +92,14 @@ import { Plus, Search } from 'lucide-vue-next';
 export default {
     name: 'Index',
     props: {
-        tracks: Array,
         playlists: Array,
     },
     components: {
         MusicLayout,
-        Track,
         Link,
         Search,
         Plus,
+        Playlist,
     },
     setup() {
         const { play } = usePlayer();
@@ -114,21 +111,12 @@ export default {
         };
     },
     computed: {
-        filteredTracks() {
-            return this.tracks.filter(
-                (track) =>
-                    track.title
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase()) ||
-                    track.artist
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase()),
+        filteredPlaylists() {
+            return this.playlists.filter((playlist) =>
+                playlist.title
+                    .toLowerCase()
+                    .includes(this.search.toLowerCase()),
             );
-        },
-    },
-    methods: {
-        handleListen(track) {
-            this.play(track);
         },
     },
 };

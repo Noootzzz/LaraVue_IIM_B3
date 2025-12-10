@@ -25,5 +25,9 @@ class Track extends Model
     {
         return 'slug';
     }
+
+    public function playlists()
+    {
+        return $this->belongsToMany(Playlist::class)->withPivot('play_count')->withTimestamps();
+    }
 }
-    

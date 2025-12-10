@@ -46,13 +46,18 @@
 
             <!-- Navigation -->
             <nav class="flex-1 space-y-2 px-4 py-6">
-                <a
-                    href="#"
-                    class="group flex items-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.02] hover:shadow-purple-500/40"
+                <Link
+                    :href="route('tracks.index')"
+                    :class="[
+                        'group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium transition-all',
+                        route().current('tracks.*')
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 font-semibold text-white shadow-lg shadow-purple-500/25 hover:scale-[1.02] hover:shadow-purple-500/40'
+                            : 'text-muted-foreground hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground',
+                    ]"
                 >
                     <Music class="mr-3 h-5 w-5" />
                     Musique
-                </a>
+                </Link>
                 <a
                     href="#"
                     class="group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-muted-foreground transition-all hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground"
@@ -62,15 +67,20 @@
                     />
                     Favoris
                 </a>
-                <a
-                    href="#"
-                    class="group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-muted-foreground transition-all hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground"
+                <Link
+                    :href="route('playlists.index')"
+                    :class="[
+                        'group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium transition-all',
+                        route().current('playlists.*')
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 font-semibold text-white shadow-lg shadow-purple-500/25 hover:scale-[1.02] hover:shadow-purple-500/40'
+                            : 'text-muted-foreground hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground',
+                    ]"
                 >
-                    <Mic2
+                    <ListMusic
                         class="mr-3 h-5 w-5 transition-colors group-hover:text-blue-500"
                     />
                     Playlists
-                </a>
+                </Link>
             </nav>
 
             <!-- User Profile -->
@@ -187,19 +197,135 @@
                 </div>
             </div>
         </main>
+
+        <!-- Spacer for Player -->
+        <div v-if="currentTrack" class="h-24 w-full"></div>
+
+        <!-- Minimalist Full Width Player -->
+        <div
+            v-if="currentTrack"
+            class="fixed right-0 bottom-0 left-0 z-50 translate-y-0 border-t border-border bg-background/95 backdrop-blur-xl transition-all duration-500 ease-out md:left-64"
+        >
+            <!-- Progress Bar -->
+            <div
+                class="group/progress absolute top-0 right-0 left-0 h-0.5 cursor-pointer bg-secondary transition-all hover:h-1"
+            >
+                <div
+                    class="absolute inset-y-0 left-0 w-1/3 bg-purple-500 transition-all group-hover/progress:bg-purple-400"
+                ></div>
+            </div>
+
+            <div
+                class="mx-auto flex max-w-[1920px] items-center justify-between px-4 py-3 md:px-6"
+            >
+                <!-- Track Info -->
+                <div
+                    class="flex flex-1 items-center gap-3 overflow-hidden md:w-1/3 md:gap-4"
+                >
+                    <div
+                        class="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded bg-muted md:h-12 md:w-12"
+                    >
+                        <img
+                            :src="`/storage/${currentTrack.image}`"
+                            class="h-full w-full object-cover"
+                        />
+                    </div>
+                    <div class="flex flex-col justify-center overflow-hidden">
+                        <h4
+                            class="truncate text-sm font-medium text-foreground"
+                        >
+                            {{ currentTrack.title }}
+                        </h4>
+                        <p
+                            class="cursor-pointer truncate text-xs text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            {{ currentTrack.artist }}
+                        </p>
+                    </div>
+                    <button
+                        class="ml-2 text-muted-foreground transition-colors hover:text-purple-500"
+                    >
+                        <Heart class="h-4 w-4" />
+                    </button>
+                </div>
+
+                <!-- Controls -->
+                <div
+                    class="flex items-center gap-3 md:w-1/3 md:justify-center md:gap-6"
+                >
+                    <button
+                        class="hidden text-muted-foreground transition hover:text-foreground md:block"
+                    >
+                        <Shuffle class="h-4 w-4" />
+                    </button>
+                    <button
+                        class="hidden text-muted-foreground transition hover:text-foreground sm:block"
+                    >
+                        <SkipBack class="h-5 w-5 fill-current" />
+                    </button>
+                    <button
+                        @click="togglePlay"
+                        class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-foreground text-background transition hover:scale-105"
+                    >
+                        <Pause v-if="isPlaying" class="h-4 w-4 fill-current" />
+                        <Play v-else class="ml-0.5 h-4 w-4 fill-current" />
+                    </button>
+                    <button
+                        class="text-muted-foreground transition hover:text-foreground"
+                    >
+                        <SkipForward class="h-5 w-5 fill-current" />
+                    </button>
+                    <button
+                        class="hidden text-muted-foreground transition hover:text-foreground md:block"
+                    >
+                        <Repeat class="h-4 w-4" />
+                    </button>
+                </div>
+
+                <!-- Volume / Extras -->
+                <div
+                    class="hidden w-1/3 items-center justify-end gap-6 md:flex"
+                >
+                    <span class="font-mono text-xs text-muted-foreground"
+                        >0:42 / 3:45</span
+                    >
+                    <div class="group flex items-center gap-3">
+                        <Volume2
+                            class="h-4 w-4 text-muted-foreground transition group-hover:text-foreground"
+                        />
+                        <div
+                            class="h-1 w-24 cursor-pointer overflow-hidden rounded-full bg-secondary"
+                        >
+                            <div
+                                class="h-full w-2/3 bg-muted-foreground transition-colors group-hover:bg-foreground"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import { usePlayer } from '@/composables/usePlayer';
 import { Link } from '@inertiajs/vue3';
 import {
     CheckCircle,
     Disc,
     Heart,
+    ListMusic,
     Menu,
     Mic2,
     Music,
+    Pause,
+    Play,
+    Repeat,
+    Shuffle,
+    SkipBack,
+    SkipForward,
     User,
+    Volume2,
     X,
 } from 'lucide-vue-next';
 
@@ -211,10 +337,22 @@ export default {
         Music,
         Heart,
         Mic2,
+        ListMusic,
         Disc,
         User,
         Menu,
         Link,
+        Play,
+        Pause,
+        SkipBack,
+        SkipForward,
+        Shuffle,
+        Repeat,
+        Volume2,
+    },
+    setup() {
+        const { currentTrack, isPlaying, togglePlay } = usePlayer();
+        return { currentTrack, isPlaying, togglePlay };
     },
     data() {
         return {
