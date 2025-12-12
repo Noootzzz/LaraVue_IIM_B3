@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Models\ApiKey;
 
 class User extends Authenticatable
 {
@@ -54,5 +55,10 @@ class User extends Authenticatable
     public function playlists()
     {
         return $this->hasMany(Playlist::class);
+    }
+
+    public function apiKeys()
+    {
+        return $this->hasMany(ApiKey::class);
     }
 }

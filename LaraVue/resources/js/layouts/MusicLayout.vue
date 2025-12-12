@@ -2,7 +2,6 @@
     <div
         class="flex min-h-screen overflow-hidden bg-background font-sans text-foreground selection:bg-purple-500 selection:text-white"
     >
-        <!-- Ambient Background -->
         <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
             <div
                 class="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] animate-pulse rounded-full bg-purple-500/20 opacity-50 blur-[120px] dark:bg-purple-900/20"
@@ -17,7 +16,6 @@
             ></div>
         </div>
 
-        <!-- Noise Overlay -->
         <div
             class="pointer-events-none fixed inset-0 z-[1] opacity-[0.03]"
             style="
@@ -25,11 +23,9 @@
             "
         ></div>
 
-        <!-- Sidebar -->
         <aside
             class="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl md:flex"
         >
-            <!-- Logo -->
             <div class="flex h-24 items-center px-8">
                 <div class="flex items-center gap-3">
                     <div
@@ -44,7 +40,6 @@
                 </div>
             </div>
 
-            <!-- Navigation -->
             <nav class="flex-1 space-y-2 px-4 py-6">
                 <Link
                     :href="route('tracks.index')"
@@ -58,15 +53,7 @@
                     <Music class="mr-3 h-5 w-5" />
                     Musique
                 </Link>
-                <a
-                    href="#"
-                    class="group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-muted-foreground transition-all hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground"
-                >
-                    <Heart
-                        class="mr-3 h-5 w-5 transition-colors group-hover:text-pink-500"
-                    />
-                    Favoris
-                </a>
+
                 <Link
                     :href="route('playlists.index')"
                     :class="[
@@ -81,9 +68,23 @@
                     />
                     Playlists
                 </Link>
+
+                <Link
+                    :href="route('api-keys.index')"
+                    :class="[
+                        'group flex items-center rounded-xl px-4 py-3.5 text-sm font-medium transition-all',
+                        route().current('api-keys.*')
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 font-semibold text-white shadow-lg shadow-purple-500/25 hover:scale-[1.02] hover:shadow-purple-500/40'
+                            : 'text-muted-foreground hover:bg-sidebar-accent hover:pl-5 hover:text-sidebar-accent-foreground',
+                    ]"
+                >
+                    <Key
+                        class="mr-3 h-5 w-5 transition-colors group-hover:text-yellow-500"
+                    />
+                    Clés API
+                </Link>
             </nav>
 
-            <!-- User Profile -->
             <div class="border-t border-white/5 p-4 text-center">
                 <Link
                     v-if="$page.props.auth.user"
@@ -98,20 +99,17 @@
                     <Link
                         :href="route('login')"
                         class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                        >Log in</Link
                     >
-                        Log in
-                    </Link>
                     <Link
                         :href="route('register')"
                         class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                        >Register</Link
                     >
-                        Register
-                    </Link>
                 </template>
             </div>
         </aside>
 
-        <!-- Mobile Header -->
         <div
             class="fixed top-0 right-0 left-0 z-30 flex h-16 items-center justify-between border-b border-white/5 bg-[#191922]/90 px-4 backdrop-blur-md md:hidden"
         >
@@ -130,7 +128,6 @@
             </button>
         </div>
 
-        <!-- Notifications -->
         <div
             class="fixed top-24 right-6 z-50 flex w-full max-w-sm flex-col gap-3"
         >
@@ -170,7 +167,6 @@
             </transition-group>
         </div>
 
-        <!-- Main Content -->
         <main class="relative z-10 flex-1 p-4 pt-20 md:ml-64 md:p-10 md:pt-10">
             <div class="mx-auto max-w-7xl">
                 <div
@@ -183,7 +179,9 @@
                             <span
                                 class="bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent"
                             >
-                                <slot name="title" />
+                                <slot name="title">
+                                    <slot name="header" />
+                                </slot>
                             </span>
                         </h1>
                     </div>
@@ -194,19 +192,17 @@
 
                 <div class="animate-fade-in-up min-h-[calc(100vh-12rem)]">
                     <slot name="content" />
+                    <slot />
                 </div>
             </div>
         </main>
 
-        <!-- Spacer for Player -->
         <div v-if="currentTrack" class="h-24 w-full"></div>
 
-        <!-- Minimalist Full Width Player -->
         <div
             v-if="currentTrack"
             class="fixed right-0 bottom-0 left-0 z-50 translate-y-0 border-t border-border bg-background/95 backdrop-blur-xl transition-all duration-500 ease-out md:left-64"
         >
-            <!-- Progress Bar -->
             <div
                 class="group/progress absolute top-0 right-0 left-0 h-0.5 cursor-pointer bg-secondary transition-all hover:h-1"
             >
@@ -218,7 +214,6 @@
             <div
                 class="mx-auto flex max-w-[1920px] items-center justify-between px-4 py-3 md:px-6"
             >
-                <!-- Track Info -->
                 <div
                     class="flex flex-1 items-center gap-3 overflow-hidden md:w-1/3 md:gap-4"
                 >
@@ -248,8 +243,6 @@
                         <Heart class="h-4 w-4" />
                     </button>
                 </div>
-
-                <!-- Controls -->
                 <div
                     class="flex items-center gap-3 md:w-1/3 md:justify-center md:gap-6"
                 >
@@ -281,8 +274,6 @@
                         <Repeat class="h-4 w-4" />
                     </button>
                 </div>
-
-                <!-- Volume / Extras -->
                 <div
                     class="hidden w-1/3 items-center justify-end gap-6 md:flex"
                 >
@@ -310,10 +301,12 @@
 <script>
 import { usePlayer } from '@/composables/usePlayer';
 import { Link } from '@inertiajs/vue3';
+// Ajout de 'Key' dans les imports
 import {
     CheckCircle,
     Disc,
     Heart,
+    Key,
     ListMusic,
     Menu,
     Mic2,
@@ -349,15 +342,14 @@ export default {
         Shuffle,
         Repeat,
         Volume2,
+        Key,
     },
     setup() {
         const { currentTrack, isPlaying, togglePlay } = usePlayer();
         return { currentTrack, isPlaying, togglePlay };
     },
     data() {
-        return {
-            notifications: [],
-        };
+        return { notifications: [] };
     },
     watch: {
         '$page.props.flash.success': {
@@ -372,10 +364,7 @@ export default {
     methods: {
         addNotification(message) {
             const id = Date.now() + Math.random();
-            this.notifications.push({
-                id,
-                message,
-            });
+            this.notifications.push({ id, message });
             setTimeout(() => {
                 this.removeNotification(id);
             }, 5000);
